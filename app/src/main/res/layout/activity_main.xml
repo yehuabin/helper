@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yhb.token.MainActivity">
-
+    android:orientation="vertical"
+    tools:context="com.yhb.taobaohelper.MainActivity">
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
    <Button
        android:id="@+id/button"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:text="启动服务"/>
+   <Button
+       android:id="@+id/btn_refreshCookie"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="获取最新Cookie"/>
+      </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-</android.support.constraint.ConstraintLayout>
+   <Button
+       android:id="@+id/btn_cookie"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="登陆淘宝"/>
+   <Button
+       android:id="@+id/btn_testCookie"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="测试cookie"/>
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+   <Button
+       android:id="@+id/btn_collect"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="采集数据"/>
+</LinearLayout>
+</LinearLayout>

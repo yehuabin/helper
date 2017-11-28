@@ -1,4 +1,4 @@
-package com.yhb.token;
+package com.yhb.taobaohelper;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -186,5 +186,21 @@ public class ProductModel extends BmobObject {
     }
 
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj==null||!(obj instanceof ProductModel)) {
+            return false;
+        }
+        ProductModel other = (ProductModel) obj;
+        if (other.getAuctionId()!=null&&other.getAuctionId().equals(this.getAuctionId())) {
+            return true;
+        }
 
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getAuctionId().hashCode();
+    }
 }

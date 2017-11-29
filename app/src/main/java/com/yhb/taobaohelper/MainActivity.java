@@ -53,12 +53,12 @@ public class MainActivity extends BaseActivity {
         mViewHolder.get(R.id.btn_collect).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int[] sortType=new int[]{3};//0,3,4,9,1
+                int[] sortType=new int[]{1};//0,3,4,9,1
                // for (int i=0;i<sortType.length;i++){
                    Thread thread=new Thread(new Runnable() {
                        @Override
                        public void run() {
-                           TaoBaoHelper.seachNZJH(3);
+                           TaoBaoHelper.seachNanz(0);
                        }
                    });
                 thread.start();

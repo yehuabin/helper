@@ -6,42 +6,123 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.yhb.taobaohelper.MainActivity">
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
-   <Button
-       android:id="@+id/button"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="启动服务"/>
-   <Button
-       android:id="@+id/btn_refreshCookie"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="获取最新Cookie"/>
-      </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 
-   <Button
-       android:id="@+id/btn_cookie"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="登陆淘宝"/>
-   <Button
-       android:id="@+id/btn_testCookie"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="测试cookie"/>
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="启动服务" />
+
+        <Button
+            android:id="@+id/btn_refreshCookie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取最新Cookie" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_cookie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登陆淘宝" />
+
+        <Button
+            android:id="@+id/btn_testCookie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试cookie" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="女装：nzjh,男装：nanz,母婴：muying,食品：hch," />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="家居：jyj,亲宝贝：qbb,运动户外：kdc,9块9：9k9,时尚：ifs" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20元封顶：20k,特价好货：tehui,淘宝DIY：diy" />
+
+    </LinearLayout>
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-   <Button
-       android:id="@+id/btn_collect"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="采集数据"/>
+    <EditText
+        android:id="@+id/et_sortType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="综合排序0,3高到低,4低到高,9销量,1返现比率" />
 </LinearLayout>
+    <EditText
+        android:id="@+id/et_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:hint="采集第几页"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="优惠券、天猫筛选数据采集"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/btn_zonghe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="采集没有天猫优惠券数据" />
+    <Button
+        android:id="@+id/btn_tamll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="采集天猫店铺数据" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/btn_quan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="采集含优惠券数据" />
+    <Button
+        android:id="@+id/btn_quanTmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="采集含天猫和优惠券数据" />
+</LinearLayout>
+    <TextView
+        android:id="@+id/tv_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

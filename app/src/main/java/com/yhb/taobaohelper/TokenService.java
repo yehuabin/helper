@@ -33,12 +33,12 @@ public class TokenService extends Service {
     public void onCreate() {
         Log.d(TAG, "onCreate: ");
         super.onCreate();
-        Resources res=getResources();
+        Resources res = getResources();
         Drawable drawable = res.getDrawable(R.drawable.logo);
 //实际上这是一个BitmapDrawable对象
-        BitmapDrawable bitmapDrawable=(BitmapDrawable)drawable;
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
 //可以在调用getBitmap方法，得到这个位图
-         largeIcon=bitmapDrawable.getBitmap();
+        largeIcon = bitmapDrawable.getBitmap();
     }
 
     @Nullable
@@ -46,8 +46,10 @@ public class TokenService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-    boolean flag=true;
+
+    boolean flag = true;
     Bitmap largeIcon;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: ");
@@ -55,7 +57,7 @@ public class TokenService extends Service {
             @Override
             public void run() {
                 int i = 0;
-final String startTime=getTime();
+                final String startTime = getTime();
                 while (flag) {
                     try {
 
@@ -72,9 +74,8 @@ final String startTime=getTime();
                                     String str = response.body().string();
                                     if (str.indexOf("yehuabin") > -1) {
                                         state = "登录成功";
-                                    }
-                                    else {
-                                        flag=false;
+                                    } else {
+                                        flag = false;
                                     }
                                     //获取PendingIntent
                                     Intent mainIntent = new Intent(getBaseContext(), MainActivity.class);

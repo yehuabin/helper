@@ -759,7 +759,7 @@ public class ProductListModel {
             private String pictUrl;
             private String auctionId;
             private Object tkMktStatus;
-            private String biz30day;
+            private int biz30day;
             private float tkRate;
             private String includeDxjh;
             private String reservePrice;
@@ -899,11 +899,11 @@ public class ProductListModel {
                 this.tkMktStatus = tkMktStatus;
             }
 
-            public String getBiz30day() {
+            public int getBiz30day() {
                 return biz30day;
             }
 
-            public void setBiz30day(String biz30day) {
+            public void setBiz30day(int biz30day) {
                 this.biz30day = biz30day;
             }
 

@@ -57,7 +57,7 @@ public class CookieActivity extends BaseActivity {
                     return;
                 }
                 TokenHelper.saveCookie(str);
-                toastLong("设置成功");
+
                 finish();
             }
         });

@@ -8,6 +8,25 @@ import cn.bmob.v3.BmobObject;
 
 public class CookieModel extends BmobObject {
     private String cookie;
+    private String remark;
+    private String state;
+    private boolean isSuccess=false;
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(boolean success) {
+        isSuccess = success;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public String getState() {
         return state;
@@ -17,7 +36,6 @@ public class CookieModel extends BmobObject {
         this.state = state;
     }
 
-    private String state;
 
     public String getCookie() {
         return cookie;

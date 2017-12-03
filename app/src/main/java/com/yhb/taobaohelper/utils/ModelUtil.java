@@ -22,10 +22,7 @@ public class ModelUtil {
         model.setPictUrl(bean.getPictUrl());
         model.setRlRate(bean.getRlRate());
         model.setShopTitle(bean.getShopTitle());
-        model.setTkCommFee(bean.getTkCommFee());
         model.setTkRate(bean.getTkRate());
-        model.setTotalFee(bean.getTotalFee());
-        model.setTotalNum(bean.getTotalNum());
         model.setUserType(bean.getUserType());
         model.setZkPrice(bean.getZkPrice());
         model.setCategory(category);

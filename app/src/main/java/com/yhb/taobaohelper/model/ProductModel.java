@@ -8,18 +8,13 @@ import cn.bmob.v3.BmobObject;
 
 public class ProductModel extends BmobObject {
 
-
     private String userType;
     private String title;
-
     private String shopTitle;
     private String pictUrl;
     private String auctionId;
-    private String biz30day;
+    private int biz30day;
     private float tkRate;
-    private String tkCommFee;
-    private String totalFee;
-    private String totalNum;
     private float zkPrice;
     private String auctionUrl;
     private String rlRate;
@@ -89,11 +84,11 @@ public class ProductModel extends BmobObject {
         this.auctionId = auctionId;
     }
 
-    public String getBiz30day() {
+    public int getBiz30day() {
         return biz30day;
     }
 
-    public void setBiz30day(String biz30day) {
+    public void setBiz30day(int biz30day) {
         this.biz30day = biz30day;
     }
 
@@ -105,29 +100,6 @@ public class ProductModel extends BmobObject {
         this.tkRate = tkRate;
     }
 
-    public String getTkCommFee() {
-        return tkCommFee;
-    }
-
-    public void setTkCommFee(String tkCommFee) {
-        this.tkCommFee = tkCommFee;
-    }
-
-    public String getTotalFee() {
-        return totalFee;
-    }
-
-    public void setTotalFee(String totalFee) {
-        this.totalFee = totalFee;
-    }
-
-    public String getTotalNum() {
-        return totalNum;
-    }
-
-    public void setTotalNum(String totalNum) {
-        this.totalNum = totalNum;
-    }
 
     public float getZkPrice() {
         return zkPrice;
@@ -186,21 +158,5 @@ public class ProductModel extends BmobObject {
     }
 
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj==null||!(obj instanceof ProductModel)) {
-            return false;
-        }
-        ProductModel other = (ProductModel) obj;
-        if (other.getAuctionId()!=null&&other.getAuctionId().equals(this.getAuctionId())) {
-            return true;
-        }
 
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return getAuctionId().hashCode();
-    }
 }

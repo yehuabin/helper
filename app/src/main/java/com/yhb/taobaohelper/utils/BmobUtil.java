@@ -24,7 +24,7 @@ public class BmobUtil {
             public void execute(String cookie, String objectId) {
                 CookieModel cookieModel = new CookieModel();
                 cookieModel.setCookie(val);
-                cookieModel.setState("success");
+                cookieModel.setSuccess(true);
                 cookieModel.setObjectId(objectId);
                 cookieModel.update(new UpdateListener() {
                     @Override

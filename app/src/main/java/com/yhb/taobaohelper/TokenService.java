@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.yhb.taobaohelper.model.LogModel;
 import com.yhb.taobaohelper.utils.BmobUtil;
 
 import java.io.IOException;
@@ -50,16 +51,28 @@ public class TokenService extends Service {
     }
 
     boolean flag = true;
+    static boolean isRunning=false;
     Bitmap largeIcon;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (isRunning){
+            return super.onStartCommand(intent, flags, startId) ;
+        }
+        isRunning=true;
         Log.d(TAG, "onStartCommand: ");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int i = 0;
                 final String startTime = getTime();
+                LogModel logModel=new LogModel();
+                logModel.setCreator("admin");
+                logModel.setModule("cookie");
+                logModel.setAction("检测cookie");
+                logModel.setRemark("开始时间:"+startTime);
+                BmobUtil.saveLog(logModel);
+                int i = 0;
+
                 while (flag) {
                     try {
 
@@ -77,8 +90,15 @@ public class TokenService extends Service {
                                     if (str.indexOf("yehuabin") > -1) {
                                         state = "登录成功";
                                     } else {
-                                        BmobUtil.sendSms();
+                                       // BmobUtil.sendSms();
+                                        LogModel logModel=new LogModel();
+                                        logModel.setCreator("admin");
+                                        logModel.setModule("cookie");
+                                        logModel.setAction("cookie检测失效");
+                                        logModel.setRemark("结束时间:"+getTime());
+                                        BmobUtil.saveLog(logModel);
                                         flag = false;
+                                        isRunning=false;
                                     }
                                     //获取PendingIntent
                                     Intent mainIntent = new Intent(getBaseContext(), MainActivity.class);

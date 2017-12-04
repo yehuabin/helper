@@ -125,8 +125,7 @@ public class TuijianActivity extends BaseActivity {
                             CouponModel couponModel = new Gson().fromJson(json, CouponModel.class);
                             ProductExtraModel productExtraModel=new ProductExtraModel();
                             if (couponModel.isOk()) {
-                                if ( productExtraModel.getCouponLink().length() == 0
-                                        || productExtraModel.getCouponLinkTaoToken().length() == 0) {
+                               productExtraModel.setAuctionId(ProductListAdapter.selectedModel.getAuctionId());
                                     productExtraModel.setCouponLink(getCouponLink(couponModel));
                                     productExtraModel.setCouponLinkTaoToken(getCouponLinkTaoToken(couponModel));
                                     BmobUtil.updateProductLink(productExtraModel);//保存淘口令
@@ -141,7 +140,7 @@ public class TuijianActivity extends BaseActivity {
                                             }
                                         }
                                     });
-                                }
+
 
                             }
                         } else {

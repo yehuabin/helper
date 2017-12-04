@@ -14,6 +14,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.yhb.taobaohelper.utils.BmobUtil;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -75,6 +77,7 @@ public class TokenService extends Service {
                                     if (str.indexOf("yehuabin") > -1) {
                                         state = "登录成功";
                                     } else {
+                                        BmobUtil.sendSms();
                                         flag = false;
                                     }
                                     //获取PendingIntent

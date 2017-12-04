@@ -15,7 +15,11 @@ public class UrlUtil {
     }
     public static String getSearchUrl(String channel,int page,String shopTag,int sortType,String query) {
         String oe="";
+        if (channel.equals("nanz")){
 
+            channel="ifs";
+            query+="&catIds=30";
+        }
         String url = String.format("http://pub.alimama.com/items/%schannel/%s.json?channel=%s&perPageSize=50&toPage=%s&shopTag=%s&sortType=%s"
                        ,oe,channel ,channel,page,shopTag,sortType);
         if (query.length()>0){

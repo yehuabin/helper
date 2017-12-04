@@ -1,5 +1,7 @@
 package com.yhb.taobaohelper;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +27,8 @@ import okhttp3.Response;
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
     Spinner spinner;
+    TextView tv_btnclick;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -33,9 +37,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        tv_btnclick = mViewHolder.get(R.id.tv_btnclick);
         TokenHelper.refreshCookie();
-       List<String> data_list = new ArrayList<String>();
+        List<String> data_list = new ArrayList<String>();
         data_list.add("nzjh");
         data_list.add("nanz");
         data_list.add("muying");
@@ -50,14 +54,14 @@ public class MainActivity extends BaseActivity {
         data_list.add("diy");
 
         //适配器
-        ArrayAdapter<String> arr_adapter= new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
+        ArrayAdapter<String> arr_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
         //设置样式
         arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
-        spinner=mViewHolder.get(R.id.spinner);
+        spinner = mViewHolder.get(R.id.spinner);
         spinner.setAdapter(arr_adapter);
 
-        Button button = (Button) findViewById(R.id.button);
+        final Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,47 +76,49 @@ public class MainActivity extends BaseActivity {
                 openActivity(CookieActivity.class);
             }
         });
-        mViewHolder.get(R.id.btn_refreshCookie).setOnClickListener(new View.OnClickListener() {
+        mViewHolder.get(R.id.btn_addTuiJian).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TokenHelper.refreshCookie();
+                openActivity(TuijianActivity.class);
             }
         });
 
         mViewHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText et_sortType=mViewHolder.get(R.id.et_sortType);
-                EditText et_page=mViewHolder.get(R.id.et_page);
-                TextView tv_result=mViewHolder.get(R.id.tv_result);
+                tv_btnclick.setText(((Button)v).getText().toString());
+                EditText et_sortType = mViewHolder.get(R.id.et_sortType);
+                EditText et_page = mViewHolder.get(R.id.et_page);
+                EditText et_xiaoliang = mViewHolder.get(R.id.et_xiaoliang);
+                TextView tv_result = mViewHolder.get(R.id.tv_result);
                 tv_result.setText("");
-                int page=Integer.parseInt(et_page.getText().toString());
-                String channel= spinner.getSelectedItem().toString();
-                int sortType=Integer.parseInt(et_sortType.getText().toString());
+                int page = Integer.parseInt(et_page.getText().toString());
+                String channel = spinner.getSelectedItem().toString();
+                int sortType = Integer.parseInt(et_sortType.getText().toString());
                 String query = "";
-                if (sortType == 3 || sortType == 4||sortType==1) {
-                    query = "startBiz30day=10000";//价格排序销量一万以上
+                if (sortType !=0) {
+                    query = "startBiz30day="+et_xiaoliang.getText();//价格排序销量一万以上
                 }
 
-               switch (v.getId()){
-                   case R.id.btn_zonghe:
-                       TaoBaoHelper.seach(UrlUtil.getSearchUrl(channel, page, "", sortType, query), new insertCallBack(channel, sortType,MainActivity.this));
+                switch (v.getId()) {
+                    case R.id.btn_zonghe:
+                        TaoBaoHelper.search(UrlUtil.getSearchUrl(channel, page, "", sortType, query), new insertCallBack(channel, sortType, MainActivity.this));
 
-                       break;
-                   case R.id.btn_tamll:
-                       TaoBaoHelper.seach(UrlUtil.getSearchUrl(channel, page, "", sortType, "userType=1&" + query), new insertCallBack(channel, sortType,MainActivity.this));
-                       break;
-                   case R.id.btn_quan:
-                       TaoBaoHelper.seach(UrlUtil.getSearchUrl(channel, page, "dpyhq", sortType, "dpyhq=1&" + query), new insertCallBack(channel, sortType,MainActivity.this));
-                       break;
-                   case R.id.btn_quanTmall:
-                       TaoBaoHelper.seach(UrlUtil.getSearchUrl(channel,page, "dpyhq", sortType, "userType=1&dpyhq=1&" + query), new insertCallBack(channel, sortType,MainActivity.this));
-                       break;
-                   default:
-                       break;
-               }
+                        break;
+                    case R.id.btn_tamll:
+                        TaoBaoHelper.search(UrlUtil.getSearchUrl(channel, page, "b2c", sortType, "userType=1&" + query), new insertCallBack(channel, sortType, MainActivity.this));
+                        break;
+                    case R.id.btn_quan:
+                        TaoBaoHelper.search(UrlUtil.getSearchUrl(channel, page, "dpyhq", sortType, "dpyhq=1&" + query), new insertCallBack(channel, sortType, MainActivity.this));
+                        break;
+                    case R.id.btn_quanTmall:
+                        TaoBaoHelper.search(UrlUtil.getSearchUrl(channel, page, "b2c,dpyhq", sortType, "userType=1&dpyhq=1&" + query), new insertCallBack(channel, sortType, MainActivity.this));
+                        break;
+                    default:
+                        break;
+                }
             }
-        }, R.id.btn_zonghe, R.id.btn_tamll, R.id.btn_quan, R.id.btn_quanTmall );
+        }, R.id.btn_zonghe, R.id.btn_tamll, R.id.btn_quan, R.id.btn_quanTmall);
 
 
 //        mViewHolder.get(R.id.btn_collect).setOnClickListener(new View.OnClickListener() {
@@ -142,20 +148,18 @@ public class MainActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onResponse(Call call,final Response response) throws IOException {
+                    public void onResponse(Call call, final Response response) throws IOException {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 try {
-                                    String str=response.body().string();
-                                    if (str.indexOf("yehuabin")>-1){
+                                    String str = response.body().string();
+                                    if (str.indexOf("yehuabin") > -1) {
                                         Toast.makeText(MainActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "登录失败" + TokenHelper.getCookie(), Toast.LENGTH_SHORT).show();
                                     }
-                                    else {
-                                        Toast.makeText(MainActivity.this, "登录失败"+TokenHelper.getCookie(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                                catch (Exception e){
+                                } catch (Exception e) {
 
                                 }
                             }

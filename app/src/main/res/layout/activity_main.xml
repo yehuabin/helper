@@ -18,10 +18,10 @@
             android:text="启动服务" />
 
         <Button
-            android:id="@+id/btn_refreshCookie"
+            android:id="@+id/btn_addTuiJian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="获取最新Cookie" />
+            android:text="添加推荐" />
     </LinearLayout>
 
     <LinearLayout
@@ -38,7 +38,7 @@
             android:id="@+id/btn_testCookie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="测试cookie" />
+            android:text="测试登录" />
     </LinearLayout>
 
     <LinearLayout
@@ -75,14 +75,32 @@
         android:id="@+id/et_sortType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="综合排序0,3高到低,4低到高,9销量,1返现比率" />
+        android:hint="综合排序0,1返现比率,3高到低,4低到高,9销量" />
 </LinearLayout>
-    <EditText
-        android:id="@+id/et_page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1"
-        android:hint="采集第几页"/>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="第几页"/>
+      <EditText
+          android:id="@+id/et_page"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="1"
+          android:hint="采集第几页"/>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="销量"/>
+      <EditText
+          android:id="@+id/et_xiaoliang"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="1000"
+          android:hint="销量默认1000"/>
+  </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -122,7 +140,13 @@
         android:text="采集含天猫和优惠券数据" />
 </LinearLayout>
     <TextView
+        android:id="@+id/tv_btnclick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"/>
+    <TextView
         android:id="@+id/tv_result"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"/>
 </LinearLayout>

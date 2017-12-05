@@ -19,7 +19,6 @@ import com.yhb.taobaohelper.utils.BmobUtil;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -54,15 +53,13 @@ public class TokenService extends Service {
     Bitmap largeIcon;
 
     @Override
-    public int onStartCommand(final Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: ");
         new Thread(new Runnable() {
             @Override
             public void run() {
-               // int i = 0;
+                int i = 0;
                 final String startTime = getTime();
-                Random random=new Random();
-                int sleep=(random.nextInt(29)+1)*10000;
                 while (flag) {
                     try {
 
@@ -111,10 +108,9 @@ public class TokenService extends Service {
                             }
                         });
 
-                        Thread.sleep(sleep);
-                        sleep=(random.nextInt(26)+5)*10000;
-                        Log.d(TAG, "休息时间:"+sleep);
-
+                        Thread.sleep(60000);
+                        Log.d(TAG, "run: " + i);
+                        i++;
                     } catch (Exception e) {
 
                     }

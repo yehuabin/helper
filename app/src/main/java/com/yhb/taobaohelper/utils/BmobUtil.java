@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.yhb.taobaohelper.TokenHelper;
 import com.yhb.taobaohelper.model.CookieModel;
+import com.yhb.taobaohelper.model.LogModel;
 import com.yhb.taobaohelper.model.ProductExtraModel;
 
 import java.text.SimpleDateFormat;
@@ -101,6 +102,20 @@ public class BmobUtil {
             public void done(String s, BmobException e) {
                 if (e!=null){
                     Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
+                }
+            }
+        });
+    }
+
+    public static void saveLog(LogModel logModel){
+        if (logModel==null){
+            return;
+        }
+        logModel.save(new SaveListener<String>() {
+            @Override
+            public void done(String s, BmobException e) {
+                if (e!=null){
+                    Log.d("bmob", e.getMessage());
                 }
             }
         });

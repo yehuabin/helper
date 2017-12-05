@@ -84,7 +84,8 @@ public class insertCallBack implements Callback {
                         ProductListModel.DataBean.PageListBean bean = datas.get(i);
 
                         ProductModel model = (ModelUtil.getProductModel(bean, category, sortType));
-                        if (!list.contains(model)) {
+                        //佣金大于2块钱的商品才添加
+                        if (!list.contains(model)&&(model.getZkPrice()*model.getTkRate()/100)>2) {
                             insertData.add(model);
                         }
                     }

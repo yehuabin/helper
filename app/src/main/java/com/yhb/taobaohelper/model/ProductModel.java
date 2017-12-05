@@ -23,6 +23,8 @@ public class ProductModel extends BmobObject {
     private float couponAmount;
     private float couponStartFee;
     private String category;
+    private int order;
+    private int sortType;
 
     public int getSortType() {
         return sortType;
@@ -32,7 +34,15 @@ public class ProductModel extends BmobObject {
         this.sortType = sortType;
     }
 
-    private int sortType;
+
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
     public String getCategory() {
         return category;

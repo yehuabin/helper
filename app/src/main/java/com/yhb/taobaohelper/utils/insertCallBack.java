@@ -66,7 +66,7 @@ public class insertCallBack implements Callback {
         }
         Gson gson = new Gson();
         final List<ProductListModel.DataBean.PageListBean> datas = gson.fromJson(json, ProductListModel.class).getData().getPageList();
-        if(datas==null){
+        if(datas==null||datas.size()==0){
             showMsg("共搜索到0条数据");
             return;
         }
@@ -80,7 +80,7 @@ public class insertCallBack implements Callback {
 
                 if (e == null) {
                     List<BmobObject> insertData = new ArrayList<>();
-                    for (int i = 0; i < datas.size(); i++) {
+                    for (int i = datas.size()-1; i >=0; i--) {
                         ProductListModel.DataBean.PageListBean bean = datas.get(i);
 
                         ProductModel model = (ModelUtil.getProductModel(bean, category, sortType));

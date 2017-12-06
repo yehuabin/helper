@@ -1,9 +1,8 @@
 package com.yhb.taobaohelper;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,6 +11,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yhb.taobaohelper.model.ProductModel;
+import com.yhb.taobaohelper.utils.SearchCallback;
 import com.yhb.taobaohelper.utils.TaoBaoHelper;
 import com.yhb.taobaohelper.utils.UrlUtil;
 import com.yhb.taobaohelper.utils.insertCallBack;
@@ -20,6 +21,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobBatch;
+import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BatchResult;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.QueryListListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -82,7 +90,72 @@ public class MainActivity extends BaseActivity {
                 openActivity(TuijianActivity.class);
             }
         });
+        mViewHolder.get(R.id.btn_searchNZ).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               TaoBaoHelper.searchNvZhuang(new SearchCallback() {
+                   @Override
+                   public void response(final List<ProductModel> datas, boolean isOK) {
+                       if (isOK){
+                           BmobQuery<ProductModel> query = new BmobQuery<ProductModel>();
+                           query.addWhereEqualTo("category", "nzjh");
+                           query.setLimit(500);
+                           //执行查询方法
+                           query.findObjects(new FindListener<ProductModel>() {
+                               @Override
+                               public void done(List<ProductModel> list, BmobException e) {
 
+                                   if (e == null) {
+                                       List<BmobObject> insertData = new ArrayList<>();
+                                       for (int i = datas.size()-1; i >=0; i--) {
+                                           ProductModel model = datas.get(i);
+
+                                           //佣金大于2块钱的商品才添加
+                                           if (!list.contains(model)&&(model.getZkPrice()*model.getTkRate()/100)>2) {
+                                               insertData.add(model);
+                                           }
+                                       }
+
+                                       Log.i("bmob", "可添加：" + insertData.size());
+                                       if (insertData.size() > 0) {
+                                           new BmobBatch().insertBatch(insertData).doBatch(new QueryListListener<BatchResult>() {
+
+                                               @Override
+                                               public void done(List<BatchResult> o, BmobException e) {
+                                                   if (e == null) {
+
+                                                       for (int i = 0; i < o.size(); i++) {
+                                                           BatchResult result = o.get(i);
+                                                           BmobException ex = result.getError();
+                                                           if (ex == null) {
+
+                                                               // Log.d("bmob", "第" + i + "个数据批量添加成功：" + result.getCreatedAt() + "," + result.getObjectId() + "," + result.getUpdatedAt());
+                                                           } else {
+                                                               Log.d("bmob", "第" + i + "个数据批量添加失败：" + ex.getMessage() + "," + ex.getErrorCode());
+                                                           }
+                                                       }
+
+                                                   } else {
+                                                       Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                                                   }
+                                               }
+                                           });
+                                       }
+
+                                   } else {
+
+                                       Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                                   }
+
+
+                               }
+                           });
+                       }
+                       toastLong("添加结束");
+                   }
+               });
+            }
+        });
         mViewHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

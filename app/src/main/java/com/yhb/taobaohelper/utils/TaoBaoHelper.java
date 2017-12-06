@@ -100,4 +100,38 @@ public class TaoBaoHelper {
         });
     }
 
+
+    public static void searchNvZhuang( final SearchCallback searchCallback) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder().url("http://pub.alimama.com/items/search.json?toPage=1&queryType=2&auctionTag=&perPageSize=50").build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try{
+                    String json = response.body().string();
+
+                    Gson gson = new Gson();
+                    final List<ProductListModel.DataBean.PageListBean> datas = gson.fromJson(json, ProductListModel.class).getData().getPageList();
+                    List<ProductModel> result=new ArrayList<ProductModel>();
+                    if (datas==null||datas.size()==0){
+                        searchCallback.response(result,true);
+                        return;
+                    }
+                    for (int i=0;i<datas.size();i++){
+                        result.add(ModelUtil.getProductModel(datas.get(i),"nzjh",0));
+                    }
+                    searchCallback.response(result,true);
+                }
+                catch (Exception e){
+                    searchCallback.response(null,false);
+                }
+
+            }
+        });
+    }
 }

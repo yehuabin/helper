@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -24,8 +25,11 @@ import com.yhb.taobaohelper.utils.TextUtil;
 import java.io.IOException;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -50,7 +54,7 @@ public class TuijianActivity extends BaseActivity {
                 et_keyword.setText("");
             }
         });
-     final   ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        final ClipboardManager mClipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         mViewHolder.get(R.id.btn_paster).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +63,7 @@ public class TuijianActivity extends BaseActivity {
                  */
                 ClipData mClipData = mClipboardManager.getPrimaryClip();
                 ClipData.Item item = mClipData.getItemAt(0);
-                if (item==null){
+                if (item == null) {
                     return;
                 }
                 et_keyword.setText(item.getText().toString());
@@ -110,46 +114,78 @@ public class TuijianActivity extends BaseActivity {
                     toastLong("先选择一个宝贝");
                     return;
                 }
+                BmobQuery<ProductModel> query = new BmobQuery<ProductModel>();
 
-                TaoBaoHelper.generateCoupon(ProductListAdapter.selectedModel.getAuctionId(), new Callback() {
+                query.addWhereEqualTo("auctionId", ProductListAdapter.selectedModel.getAuctionId());
+
+                query.setLimit(1);
+                query.findObjects(new FindListener<ProductModel>() {
                     @Override
-                    public void onFailure(Call call, IOException e) {
-                        toastLong("复制失败，请稍后重试");
-                    }
+                    public void done(List<ProductModel> object, BmobException e) {
+                        if (e == null) {
+                            if (object == null || object.size() == 0) {
+                                addNew();
+                            } else {
+                                ProductModel p2 = object.get(0);
+                                p2.setObjectId(p2.getObjectId());
+                                p2.delete(new UpdateListener() {
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String json = response.body().string();
+                                    @Override
+                                    public void done(BmobException e) {
+                                        addNew();
+                                    }
 
-                        if (response.request().url().host().equals("pub.alimama.com")) {
-                            CouponModel couponModel = new Gson().fromJson(json, CouponModel.class);
-                            ProductExtraModel productExtraModel=new ProductExtraModel();
-                            if (couponModel.isOk()) {
-                               productExtraModel.setAuctionId(ProductListAdapter.selectedModel.getAuctionId());
-                                    productExtraModel.setCouponLink(getCouponLink(couponModel));
-                                    productExtraModel.setCouponLinkTaoToken(getCouponLinkTaoToken(couponModel));
-                                    BmobUtil.updateProductLink(productExtraModel);//保存淘口令
-
-                                    ProductListAdapter.selectedModel.save(new SaveListener<String>() {
-                                        @Override
-                                        public void done(String s, BmobException e) {
-                                            if (e == null) {
-                                                toastLong("添加成功");
-                                            } else {
-                                                toastLong("添加失败:" + e.getMessage());
-                                            }
-                                        }
-                                    });
-
-
+                                });
                             }
                         } else {
-                            toastLong("淘宝登录失效，请重新登录");
-
+                            Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                         }
-
                     }
                 });
+
+
+            }
+        });
+    }
+
+
+    private void addNew() {
+        TaoBaoHelper.generateCoupon(ProductListAdapter.selectedModel.getAuctionId(), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                toastLong("复制失败，请稍后重试");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String json = response.body().string();
+
+                if (response.request().url().host().equals("pub.alimama.com")) {
+                    CouponModel couponModel = new Gson().fromJson(json, CouponModel.class);
+                    ProductExtraModel productExtraModel = new ProductExtraModel();
+                    if (couponModel.isOk()) {
+                        productExtraModel.setAuctionId(ProductListAdapter.selectedModel.getAuctionId());
+                        productExtraModel.setCouponLink(getCouponLink(couponModel));
+                        productExtraModel.setCouponLinkTaoToken(getCouponLinkTaoToken(couponModel));
+                        BmobUtil.updateProductLink(productExtraModel);//保存淘口令
+
+                        ProductListAdapter.selectedModel.save(new SaveListener<String>() {
+                            @Override
+                            public void done(String s, BmobException e) {
+                                if (e == null) {
+                                    toastLong("添加成功");
+                                } else {
+                                    toastLong("添加失败:" + e.getMessage());
+                                }
+                            }
+                        });
+
+
+                    }
+                } else {
+                    toastLong("淘宝登录失效，请重新登录");
+
+                }
 
             }
         });

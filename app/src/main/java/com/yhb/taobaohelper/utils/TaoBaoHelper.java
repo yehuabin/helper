@@ -68,7 +68,7 @@ public class TaoBaoHelper {
 
     public static void search(final String keyword, final SearchCallback searchCallback) {
         OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder().url("http://pub.alimama.com/items/search.json?toPage=1&perPageSize=20&q="+keyword).build();
+        Request request = new Request.Builder().url("http://pub.alimama.com/items/search.json?toPage=1&sortType=9&perPageSize=20&q="+keyword).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

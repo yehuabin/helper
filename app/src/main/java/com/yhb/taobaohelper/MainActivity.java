@@ -46,6 +46,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tv_btnclick = mViewHolder.get(R.id.tv_btnclick);
+
         TokenHelper.refreshCookie();
         List<String> data_list = new ArrayList<String>();
         data_list.add("nzjh");

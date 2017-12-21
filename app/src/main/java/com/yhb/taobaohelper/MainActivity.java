@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yhb.taobaohelper.model.ProductModel;
+import com.yhb.taobaohelper.utils.MYHUtil;
 import com.yhb.taobaohelper.utils.SearchCallback;
 import com.yhb.taobaohelper.utils.TaoBaoHelper;
 import com.yhb.taobaohelper.utils.UrlUtil;
@@ -61,7 +62,7 @@ public class MainActivity extends BaseActivity {
         data_list.add("20k");
         data_list.add("tehui");
         data_list.add("diy");
-
+        mViewHolder.setText(MYHUtil.host, R.id.et_myhUrl);
         //适配器
         ArrayAdapter<String> arr_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
         //设置样式
@@ -91,9 +92,11 @@ public class MainActivity extends BaseActivity {
                 openActivity(TuijianActivity.class);
             }
         });
+        final EditText et_myhUrl=mViewHolder.get(R.id.et_myhUrl);
         mViewHolder.get(R.id.btn_searchNZ).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MYHUtil.host=et_myhUrl.getText().toString();
                TaoBaoHelper.searchNvZhuang(new SearchCallback() {
                    @Override
                    public void response(final List<ProductModel> datas, boolean isOK) {
@@ -193,7 +196,6 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }, R.id.btn_zonghe, R.id.btn_tamll, R.id.btn_quan, R.id.btn_quanTmall);
-
 
 //        mViewHolder.get(R.id.btn_collect).setOnClickListener(new View.OnClickListener() {
 //            @Override

@@ -64,6 +64,7 @@ public class insertCallBack implements Callback {
             showMsg("请重新登录淘宝: " + "category:" + category + " sortype:" + sortType);
             return;
         }
+        MYHUtil.addRepertory(json,category,sortType);
         Gson gson = new Gson();
         final List<ProductListModel.DataBean.PageListBean> datas = gson.fromJson(json, ProductListModel.class).getData().getPageList();
         if(datas==null||datas.size()==0){
@@ -72,7 +73,7 @@ public class insertCallBack implements Callback {
         }
         BmobQuery<ProductModel> query = new BmobQuery<ProductModel>();
         query.addWhereEqualTo("category", category);
-        query.setLimit(500);
+        query.setLimit(1);
         //执行查询方法
         query.findObjects(new FindListener<ProductModel>() {
             @Override
@@ -85,7 +86,7 @@ public class insertCallBack implements Callback {
 
                         ProductModel model = (ModelUtil.getProductModel(bean, category, sortType));
                         //佣金大于2块钱的商品才添加
-                        if (!list.contains(model)&&(model.getZkPrice()*model.getTkRate()/100)>2) {
+                        if ((model.getZkPrice()*model.getTkRate()/100)>2) {
                             insertData.add(model);
                         }
                     }

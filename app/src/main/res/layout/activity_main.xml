@@ -110,6 +110,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="优惠券、天猫筛选数据采集"/>
+    <EditText
+        android:id="@+id/et_myhUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -2,6 +2,8 @@ package com.yhb.taobaohelper;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -93,6 +95,22 @@ public class MainActivity extends BaseActivity {
             }
         });
         final EditText et_myhUrl=mViewHolder.get(R.id.et_myhUrl);
+        et_myhUrl.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                MYHUtil.host=et_myhUrl.getText().toString();
+            }
+        });
         mViewHolder.get(R.id.btn_searchNZ).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

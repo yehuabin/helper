@@ -66,11 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="家居：jyj,亲宝贝：qbb,运动户外：kdc,9块9：9k9,时尚：ifs" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20元封顶：20k,特价好货：tehui,淘宝DIY：diy" />
+            android:text="家居：jyj,时尚：ifs" />
 
     </LinearLayout>
 <LinearLayout
@@ -80,6 +76,7 @@
         android:id="@+id/et_sortType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="0"
         android:hint="综合排序0,1返现比率,3高到低,4低到高,9销量" />
 </LinearLayout>
   <LinearLayout

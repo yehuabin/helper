@@ -59,6 +59,7 @@ public class CookieActivity extends BaseActivity {
                     toastLong("cookie为空");
                     return;
                 }
+
                 TokenHelper.saveCookie(str);
                 LogModel logModel=new LogModel();
                 logModel.setCreator("admin");

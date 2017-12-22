@@ -1,7 +1,5 @@
 package com.yhb.taobaohelper.utils;
 
-import android.util.Log;
-
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -19,7 +17,7 @@ import okhttp3.Response;
 public class MYHUtil {
     private static final String TAG = "MYHUtil";
     public static String host="m.5imyh.com";
-    public static void addRepertory(String repertorys,String category,Number sortType){
+    public static void saveRepertory(String repertorys,String category,Number sortType){
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBodyPost = new FormBody.Builder()
                 .add("json", repertorys)
@@ -27,7 +25,7 @@ public class MYHUtil {
                 .add("sortType", String.valueOf(sortType))
 
                 .build();
-        Request request = new Request.Builder().url("http://"+host+"/repertoryApi/repertory").post(requestBodyPost).build();
+        Request request = new Request.Builder().url("http://"+host+"/adminApi/repertory").post(requestBodyPost).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -36,14 +34,25 @@ public class MYHUtil {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                try{
-                    String json = response.body().string();
-                    Log.d(TAG, "onResponse: "+json);
 
-                }
-                catch (Exception e){
+            }
+        });
+    }
 
-                }
+    public static void saveCookie(String cookie){
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBodyPost = new FormBody.Builder()
+                .add("cookie", cookie)
+                .build();
+        Request request = new Request.Builder().url("http://"+host+"/adminApi/cookie").post(requestBodyPost).build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
 
             }
         });

@@ -64,7 +64,7 @@ public class insertCallBack implements Callback {
             showMsg("请重新登录淘宝: " + "category:" + category + " sortype:" + sortType);
             return;
         }
-        MYHUtil.addRepertory(json,category,sortType);
+        MYHUtil.saveRepertory(json,category,sortType);
         Gson gson = new Gson();
         final List<ProductListModel.DataBean.PageListBean> datas = gson.fromJson(json, ProductListModel.class).getData().getPageList();
         if(datas==null||datas.size()==0){

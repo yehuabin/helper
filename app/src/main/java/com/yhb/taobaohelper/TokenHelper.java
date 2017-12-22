@@ -3,6 +3,7 @@ package com.yhb.taobaohelper;
 import android.util.Log;
 
 import com.yhb.taobaohelper.utils.BmobUtil;
+import com.yhb.taobaohelper.utils.MYHUtil;
 
 import java.io.IOException;
 
@@ -77,6 +78,7 @@ public class TokenHelper {
     }
 
     public static void saveCookie(String val){
+        MYHUtil.saveCookie(val);
         BmobUtil.saveCookie(val);
     }
     public static void refreshCookie(){

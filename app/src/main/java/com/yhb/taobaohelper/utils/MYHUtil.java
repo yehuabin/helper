@@ -39,10 +39,11 @@ public class MYHUtil {
         });
     }
 
-    public static void saveCookie(String cookie){
+    public static void saveCookie(String cookie,String token){
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBodyPost = new FormBody.Builder()
                 .add("cookie", cookie)
+                .add("token", token)
                 .build();
         Request request = new Request.Builder().url("http://"+host+"/adminApi/cookie").post(requestBodyPost).build();
         okHttpClient.newCall(request).enqueue(new Callback() {

@@ -43,34 +43,56 @@ public class CookieActivity extends BaseActivity {
                 super.onPageFinished(view, url);
             }
         });
-        CookieManager.getInstance().removeAllCookie();
+       // CookieManager.getInstance().removeAllCookie();
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setUserAgentString("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.104 Safari/537.36 Core/1.53.3427.400 QQBrowser/9.6.12513.400");
         webView.loadUrl("https://login.taobao.com/member/login.jhtml?style=mini&newMini2=true&css_style=alimama&from=alimama&redirectURL=http://pub.alimama.com/common/code/getAuctionCode.json?auctionid=556095016857&adzoneid=148716480&siteid=39748344&scenes=1&full_redirect=true&disableQuickLogin=true");
-
+        Button btn_login=mViewHolder.get(R.id.btn_login);
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CookieManager.getInstance().removeAllCookie();
+                // webView.loadUrl("https://login.taobao.com/member/login.jhtml?style=mini&newMini2=true&css_style=alimama&from=alimama&redirectURL=http://pub.alimama.com/common/code/getAuctionCode.json?auctionid=556095016857&adzoneid=148716480&siteid=39748344&scenes=1&full_redirect=true&disableQuickLogin=true");
+            }
+        });
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = getCookie("http://pub.alimama.com", "cookie2");
-                if (str==null||str.length()==0){
+                webView.loadUrl("http://pub.alimama.com/promo/search/index.htm?q=https://item.taobao.com/item.htm?id=562143515994");
+            }
+        });
+
+        Button btn_setting = (Button) findViewById(R.id.btn_setting);
+        btn_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cookie = getCookie("http://pub.alimama.com", "cookie2");
+                if (cookie==null||cookie.length()==0){
                     toastLong("cookie为空");
                     return;
                 }
-
-                TokenHelper.saveCookie(str);
+                String _tb_token_ = getCookie("http://pub.alimama.com", "_tb_token_");
+                if (_tb_token_==null||_tb_token_.length()==0){
+                    toastLong("_tb_token_为空");
+                    return;
+                }
+                TokenHelper.saveCookie(cookie,_tb_token_);
                 LogModel logModel=new LogModel();
                 logModel.setCreator("admin");
                 logModel.setModule("cookie");
                 logModel.setAction("更新cookie");
-                logModel.setRemark("cookie:"+str);
+                logModel.setRemark("cookie:"+cookie);
                 BmobUtil.saveLog(logModel);
                 finish();
             }
         });
     }
+
+
+
 
     public String getCookie(String siteName, String CookieName) {
         String CookieValue = null;

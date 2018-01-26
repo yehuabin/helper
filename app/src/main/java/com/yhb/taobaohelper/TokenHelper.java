@@ -77,9 +77,9 @@ public class TokenHelper {
         GLOABL_COOKIE=val;
     }
 
-    public static void saveCookie(String val){
-        MYHUtil.saveCookie(val);
-        BmobUtil.saveCookie(val);
+    public static void saveCookie(String cookie,String token){
+        MYHUtil.saveCookie(cookie,token);
+        BmobUtil.saveCookie(cookie);
     }
     public static void refreshCookie(){
         BmobUtil.refreshCookie();

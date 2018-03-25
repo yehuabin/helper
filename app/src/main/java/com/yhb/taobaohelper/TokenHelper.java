@@ -52,6 +52,14 @@ public class TokenHelper {
         okHttpClient.newCall(request).enqueue(callback);
     }
 
+    public static void generateTaoToken(Callback callback){
+        OkHttpClient okHttpClient = getClient();
+        Request request = new Request.Builder().url("http://pub.alimama.com//common/code/getAuctionCode.json?auctionid=539397238541&adzoneid=173234312&siteid=41284538&scenes=1").build();
+        okHttpClient.newCall(request).enqueue(callback);
+    }
+
+
+
     private static OkHttpClient getClient(){
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .addInterceptor(new Interceptor() {

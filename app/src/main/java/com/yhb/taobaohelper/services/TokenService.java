@@ -1,4 +1,4 @@
-package com.yhb.taobaohelper;
+package com.yhb.taobaohelper.services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -15,6 +15,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.yhb.taobaohelper.MainActivity;
+import com.yhb.taobaohelper.R;
+import com.yhb.taobaohelper.TokenHelper;
 import com.yhb.taobaohelper.model.LogModel;
 import com.yhb.taobaohelper.utils.BmobUtil;
 

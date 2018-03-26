@@ -79,7 +79,9 @@ public class CookieActivity extends BaseActivity {
                     toastLong("_tb_token_为空");
                     return;
                 }
-                TokenHelper.saveCookie(cookie,_tb_token_);
+                CookieManager cookieManager = CookieManager.getInstance();
+                String cookies = cookieManager.getCookie("http://pub.alimama.com");
+                TokenHelper.saveCookie(cookie,_tb_token_,cookies);
                 LogModel logModel=new LogModel();
                 logModel.setCreator("admin");
                 logModel.setModule("cookie");

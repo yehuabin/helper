@@ -1,4 +1,4 @@
-package com.yhb.taobaohelper.utils;
+package com.yhb.taobaohelper.callback;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 import com.yhb.taobaohelper.R;
 import com.yhb.taobaohelper.model.ProductListModel;
 import com.yhb.taobaohelper.model.ProductModel;
+import com.yhb.taobaohelper.utils.MYHUtil;
+import com.yhb.taobaohelper.utils.ModelUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.yhb.taobaohelper.utils;
+package com.yhb.taobaohelper.callback;
 
 import com.yhb.taobaohelper.model.ProductModel;
 

@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".TokenService" />
+        <service android:name=".services.TokenService" />
+        <service android:name=".services.HandleTaoTokenService" />
 
         <activity android:name=".CookieActivity" />
         <activity android:name=".TuijianActivity"></activity>

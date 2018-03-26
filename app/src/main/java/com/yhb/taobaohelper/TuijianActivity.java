@@ -18,7 +18,7 @@ import com.yhb.taobaohelper.model.ProductExtraModel;
 import com.yhb.taobaohelper.model.ProductModel;
 import com.yhb.taobaohelper.utils.BmobUtil;
 import com.yhb.taobaohelper.utils.ProductListAdapter;
-import com.yhb.taobaohelper.utils.SearchCallback;
+import com.yhb.taobaohelper.callback.SearchCallback;
 import com.yhb.taobaohelper.utils.TaoBaoHelper;
 import com.yhb.taobaohelper.utils.TextUtil;
 

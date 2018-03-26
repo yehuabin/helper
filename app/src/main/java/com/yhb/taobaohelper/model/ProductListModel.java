@@ -910,7 +910,16 @@ public class ProductListModel {
             public float getTkRate() {
                 return tkRate;
             }
-
+            public float getRate() {
+                float eRate=tkRate;
+                if(eventRate!=null){
+                   float temp=Float.parseFloat(eventRate.toString());
+                    if(temp>tkRate){
+                        eRate=temp;
+                    }
+                }
+                return eRate*0.4f;
+            }
             public void setTkRate(float tkRate) {
                 this.tkRate = tkRate;
             }

@@ -1,6 +1,7 @@
 package com.yhb.taobaohelper.utils;
 
 import com.google.gson.Gson;
+import com.yhb.taobaohelper.callback.SearchCallback;
 import com.yhb.taobaohelper.model.ProductListModel;
 import com.yhb.taobaohelper.model.ProductModel;
 

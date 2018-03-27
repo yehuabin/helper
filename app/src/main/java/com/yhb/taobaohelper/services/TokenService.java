@@ -15,13 +15,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.yhb.taobaohelper.MainActivity;
 import com.yhb.taobaohelper.R;
 import com.yhb.taobaohelper.TokenHelper;
 import com.yhb.taobaohelper.model.LogModel;
 import com.yhb.taobaohelper.utils.BmobUtil;
+import com.yhb.taobaohelper.utils.MYHUtil;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -29,7 +34,6 @@ import java.util.Random;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-
 /**
  * Created by smk on 2017/11/24.
  */
@@ -39,8 +43,14 @@ public class TokenService extends Service {
 
     @Override
     public void onCreate() {
+
         Log.d(TAG, "onCreate: ");
         super.onCreate();
+
+        mSocket.on("taotoken", onNewMessage);
+
+        mSocket.connect();
+
         Resources res = getResources();
         Drawable drawable = res.getDrawable(R.drawable.logo);
 //实际上这是一个BitmapDrawable对象
@@ -58,7 +68,21 @@ public class TokenService extends Service {
     boolean flag = true;
     Bitmap largeIcon;
     static boolean isRunning = false;
-
+    private Socket mSocket;
+    {
+        try {
+           // mSocket = IO.socket("http://17.178.217.41");
+            mSocket = IO.socket("http://m.5imyh.com");
+        } catch (URISyntaxException e) {
+            Log.d(TAG, "instance initializer: "+e);
+        }
+    }
+    private Emitter.Listener onNewMessage = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            MYHUtil.handleTaoToken();
+        }
+    };
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
         if (isRunning) {
@@ -78,9 +102,16 @@ public class TokenService extends Service {
                 BmobUtil.saveLog(logModel);
                 Random random = new Random();
                 int sleep = (random.nextInt(56) + 5) * 10000;
+                int counter=sleep+1;
                 Log.d(TAG, "休息时间:" + sleep);
                 while (flag) {
                     try {
+                        counter++;
+                        if (counter > sleep) {
+
+                            sleep = (random.nextInt(56) + 5) * 10000;
+                            Log.d(TAG, "休息时间:" + sleep);
+                            counter = 0;
 
                         TokenHelper.isLogin(new Callback() {
                             @Override
@@ -123,9 +154,7 @@ public class TokenService extends Service {
                                             //设置通知内容
                                             .setContentText(state);
 
-                                    //设置通知时间，默认为系统发出通知的时间，通常不用设置
-                                    //.setWhen(System.currentTimeMillis());
-                                    //通过builder.build()方法生成Notification对象,并发送通知,id=1
+
                                     Date d = new Date();
                                     int hours = d.getHours();
 
@@ -143,11 +172,13 @@ public class TokenService extends Service {
                                 }
                             }
                         });
+                        }
+                       // MYHUtil.handleTaoToken();
 
                         Thread.sleep(sleep);
 
-                        sleep = (random.nextInt(56) + 5) * 10000;
-                        Log.d(TAG, "休息时间:" + sleep);
+
+
 
                     } catch (Exception e) {
                         Log.d(TAG, "Exception: " + e.getMessage());
@@ -162,6 +193,8 @@ public class TokenService extends Service {
     public void onDestroy() {
         Log.d(TAG, "onDestroy: ");
         super.onDestroy();
+
+        mSocket.disconnect();
     }
 
     public String getTime() {

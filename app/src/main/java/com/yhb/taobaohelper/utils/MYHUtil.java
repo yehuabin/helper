@@ -1,5 +1,7 @@
 package com.yhb.taobaohelper.utils;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.yhb.taobaohelper.TokenHelper;
@@ -86,17 +88,18 @@ public class MYHUtil {
 
     static boolean isHandling = false;
 
-    public static void handleTaoToken() throws Exception{
+    public static void handleTaoToken() {
 
         if (isHandling) {
             return;
         }
+        Log.d(TAG, "handleTaoToken: ");
         isHandling = true;
         Request request = new Request.Builder().url("http://" + host + "/adminApi/getTaoTokenRequest").build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                isHandling = false;
             }
 
             @Override
@@ -123,64 +126,70 @@ public class MYHUtil {
                                             .build();
                                     Request request = new Request.Builder().url("http://" + host + "/adminApi/updateTaoToken").post(requestBodyPost).build();
                                     newCall(request);
-                                    return;
+
                                 }
-                                TokenHelper.generateTaoToken(product, new Callback() {
-                                    @Override
-                                    public void onFailure(Call call, IOException e) {
+                                else {
+                                    TokenHelper.generateTaoToken(product, new Callback() {
+                                        @Override
+                                        public void onFailure(Call call, IOException e) {
 
-                                    }
+                                        }
 
-                                    @Override
-                                    public void onResponse(Call call, Response response) throws IOException {
-                                        String body = response.body().string();
-                                        if (body.indexOf("!doctype") > -1) {
-                                            RequestBody requestBodyPost = new FormBody.Builder()
-                                                    .add("id", item.get_id())
-                                                    .add("ok", "0")
-
-                                                    .add("replyContent", "淘宝登录过期")
-                                                    .build();
-                                            Request request = new Request.Builder().url("http://" + host + "/adminApi/updateTaoToken").post(requestBodyPost).build();
-                                            newCall(request);
-                                        } else {
-                                            //调用接口更新内容
-                                            JsonObject jsonBody = gson.fromJson(body, JsonObject.class);
-
-
-                                            boolean ok = jsonBody.get("ok").getAsBoolean();
-                                            if (ok) {
-                                                JsonObject dataJson = jsonBody.get("data").getAsJsonObject();
-                                                String taoToken = dataJson.get("taoToken").getAsString();
-                                                if (dataJson.get("couponLinkTaoToken") != null) {
-                                                    taoToken = dataJson.get("couponLinkTaoToken").getAsString();
-                                                }
-
-
-                                                float price = product.getZkPrice() - product.getCouponAmount();
-
-                                                String content = "★" + product.getTitle() + "\n" +
-                                                        "★券后价: " + String.format("%.2f",price) + "\n" +
-                                                        "★预估奖励: " +String.format("%.2f", (price * product.getRate()/100))  + "\n" +
-                                                        "★优惠券: " + String.format("%.2f",product.getCouponAmount()) + "\n" +
-                                                        taoToken + "\n" +
-                                                        "--------------------\n" +
-                                                        "★复制信息，打开淘宝APP下单";
+                                        @Override
+                                        public void onResponse(Call call, Response response) throws IOException {
+                                            String body = response.body().string();
+                                            if (body.indexOf("!doctype") > -1) {
                                                 RequestBody requestBodyPost = new FormBody.Builder()
                                                         .add("id", item.get_id())
-                                                        .add("ok", "1")
-                                                        .add("title", product.getTitle())
-                                                        .add("taoToken", taoToken)
-                                                        .add("replyContent", content)
+                                                        .add("ok", "0")
+
+                                                        .add("replyContent", "请求生成淘口令时，发现要重新登录淘宝")
                                                         .build();
                                                 Request request = new Request.Builder().url("http://" + host + "/adminApi/updateTaoToken").post(requestBodyPost).build();
                                                 newCall(request);
+                                            } else {
+                                                //调用接口更新内容
+                                                JsonObject jsonBody = gson.fromJson(body, JsonObject.class);
+
+
+                                                boolean ok = jsonBody.get("ok").getAsBoolean();
+                                                if (ok) {
+                                                    JsonObject dataJson = jsonBody.get("data").getAsJsonObject();
+                                                    String taoToken = dataJson.get("taoToken").getAsString();
+                                                    if (dataJson.get("couponLinkTaoToken") != null) {
+                                                        taoToken = dataJson.get("couponLinkTaoToken").getAsString();
+                                                    }
+
+
+                                                    float price = product.getZkPrice() - product.getCouponAmount();
+                                                    float reward=(price * product.getRate() / 100);
+
+                                                    String content = "★" + product.getTitle() + "\n" +
+                                                            "★券后价: " + String.format("%.2f", price) + "\n" +
+                                                            "★预估奖励: " + String.format("%.2f", reward) + "\n" +
+                                                            "★优惠券: " + String.format("%.2f", product.getCouponAmount()) + "\n" +
+                                                            taoToken + "\n" +
+                                                            "--------------------\n" +
+                                                            "★复制信息，打开淘宝APP下单";
+                                                    RequestBody requestBodyPost = new FormBody.Builder()
+                                                            .add("id", item.get_id())
+                                                            .add("ok", "1")
+                                                            .add("title", product.getTitle())
+                                                            .add("tkRate", String.format("%.2f", product.getRate()) )
+                                                            .add("price",String.format("%.2f",price) )
+                                                            .add("reward", String.format("%.2f", reward))
+                                                            .add("taoToken", taoToken)
+                                                            .add("replyContent", content)
+                                                            .build();
+                                                    Request request = new Request.Builder().url("http://" + host + "/adminApi/updateTaoToken").post(requestBodyPost).build();
+                                                    newCall(request);
+                                                }
+
+
                                             }
-
-
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
 
                         }

@@ -13,14 +13,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yhb.taobaohelper.callback.SearchCallback;
+import com.yhb.taobaohelper.callback.insertCallBack;
 import com.yhb.taobaohelper.model.ProductModel;
-import com.yhb.taobaohelper.services.HandleTaoTokenService;
 import com.yhb.taobaohelper.services.TokenService;
 import com.yhb.taobaohelper.utils.MYHUtil;
-import com.yhb.taobaohelper.callback.SearchCallback;
 import com.yhb.taobaohelper.utils.TaoBaoHelper;
 import com.yhb.taobaohelper.utils.UrlUtil;
-import com.yhb.taobaohelper.callback.insertCallBack;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -251,8 +250,6 @@ public class MainActivity extends BaseActivity {
                                 try {
                                     String str = response.body().string();
                                     if (str.indexOf("yehuabin") > -1) {
-                                        Intent intent = new Intent(getBaseContext(), HandleTaoTokenService.class);
-                                        startService(intent);
                                         Toast.makeText(MainActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                                     } else {
                                         Toast.makeText(MainActivity.this, "登录失败" + TokenHelper.getCookie(), Toast.LENGTH_SHORT).show();

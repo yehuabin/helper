@@ -1,7 +1,5 @@
 package com.yhb.taobaohelper.utils;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.yhb.taobaohelper.TokenHelper;
@@ -90,11 +88,7 @@ public class MYHUtil {
 
     public static void handleTaoToken() {
 
-        if (isHandling) {
-            return;
-        }
-        Log.d(TAG, "handleTaoToken: ");
-        isHandling = true;
+
         Request request = new Request.Builder().url("http://" + host + "/adminApi/getTaoTokenRequest").build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -106,7 +100,7 @@ public class MYHUtil {
             public void onResponse(Call call, Response response) throws IOException {
                 final String json = response.body().string();
                 if(json.indexOf("502 Bad")>-1){
-                    isHandling=false;
+
                     return;
                 }
                 final Gson gson = new Gson();
@@ -197,7 +191,7 @@ public class MYHUtil {
 
 
                 }
-                isHandling = false;
+
             }
         });
     }

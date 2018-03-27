@@ -71,6 +71,9 @@ public class TokenHelper {
 
                 if(datas!=null&&datas.size()>0){
                     product=datas.get(0);
+                    if(product.getTkSpecialCampaignIdRateMap()!=null){
+
+                    }
                 }
 
                 productCallback.callback(product,err);

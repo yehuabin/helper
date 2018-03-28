@@ -11,9 +11,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
-import com.yhb.taobaohelper.model.LogModel;
-import com.yhb.taobaohelper.utils.BmobUtil;
-
 public class CookieActivity extends BaseActivity {
     WebView webView;
     private static final String TAG = "CookieActivity";
@@ -82,12 +79,7 @@ public class CookieActivity extends BaseActivity {
                 CookieManager cookieManager = CookieManager.getInstance();
                 String cookies = cookieManager.getCookie("http://pub.alimama.com");
                 TokenHelper.saveCookie(cookie,_tb_token_,cookies);
-                LogModel logModel=new LogModel();
-                logModel.setCreator("admin");
-                logModel.setModule("cookie");
-                logModel.setAction("更新cookie");
-                logModel.setRemark("cookie:"+cookie);
-                BmobUtil.saveLog(logModel);
+
                 finish();
             }
         });

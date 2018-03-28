@@ -23,8 +23,8 @@ import okhttp3.Response;
 
 public class MYHUtil {
     private static final String TAG = "MYHUtil";
-    public static String host = "m.5imyh.com";
-    //public static String host = "17.178.217.26";
+   public static String host = "m.5imyh.com";
+   // public static String host = "17.178.217.26";
     static OkHttpClient okHttpClient = new OkHttpClient();
 
     public static void saveRepertory(String repertorys, String category, Number sortType) {
@@ -172,6 +172,7 @@ public class MYHUtil {
                                                             .add("tkRate", String.format("%.2f", product.getRate()) )
                                                             .add("price",String.format("%.2f",price) )
                                                             .add("reward", String.format("%.2f", reward))
+                                                            .add("couponAmount", String.format("%.2f", product.getCouponAmount()))
                                                             .add("taoToken", taoToken)
                                                             .add("replyContent", content)
                                                             .build();

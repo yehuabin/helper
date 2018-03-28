@@ -21,8 +21,6 @@ import com.github.nkzawa.socketio.client.Socket;
 import com.yhb.taobaohelper.MainActivity;
 import com.yhb.taobaohelper.R;
 import com.yhb.taobaohelper.TokenHelper;
-import com.yhb.taobaohelper.model.LogModel;
-import com.yhb.taobaohelper.utils.BmobUtil;
 import com.yhb.taobaohelper.utils.MYHUtil;
 
 import java.io.IOException;
@@ -34,6 +32,7 @@ import java.util.Random;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
 /**
  * Created by smk on 2017/11/24.
  */
@@ -69,20 +68,23 @@ public class TokenService extends Service {
     Bitmap largeIcon;
     static boolean isRunning = false;
     private Socket mSocket;
+
     {
         try {
-           // mSocket = IO.socket("http://17.178.217.41");
-            mSocket = IO.socket("http://m.5imyh.com");
+            // mSocket = IO.socket("http://17.178.217.41");
+            mSocket = IO.socket("http://"+MYHUtil.host);
         } catch (URISyntaxException e) {
-            Log.d(TAG, "instance initializer: "+e);
+            Log.d(TAG, "instance initializer: " + e);
         }
     }
+
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
             MYHUtil.handleTaoToken();
         }
     };
+
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
         if (isRunning) {
@@ -94,24 +96,16 @@ public class TokenService extends Service {
             public void run() {
                 // int i = 0;
                 final String startTime = getTime();
-                LogModel logModel = new LogModel();
-                logModel.setCreator("admin");
-                logModel.setModule("cookie");
-                logModel.setAction("检测cookie");
-                logModel.setRemark("开始时间:" + startTime);
-                BmobUtil.saveLog(logModel);
+
                 Random random = new Random();
                 int sleep = (random.nextInt(56) + 5) * 10000;
-                int counter=sleep+1;
-                Log.d(TAG, "休息时间:" + sleep);
+
                 while (flag) {
                     try {
-                        counter++;
-                        if (counter > sleep) {
 
-                            sleep = (random.nextInt(56) + 5) * 10000;
-                            Log.d(TAG, "休息时间:" + sleep);
-                            counter = 0;
+
+                        Log.d(TAG, "休息时间:" + sleep);
+
 
                         TokenHelper.isLogin(new Callback() {
                             @Override
@@ -127,14 +121,8 @@ public class TokenService extends Service {
                                     if (str.indexOf("yehuabin") > -1) {
                                         state = "登录成功";
                                     } else {
-                                        // BmobUtil.sendSms();
 
-                                        LogModel logModel = new LogModel();
-                                        logModel.setCreator("admin");
-                                        logModel.setModule("cookie");
-                                        logModel.setAction("cookie检测失效");
-                                        logModel.setRemark("结束时间:" + getTime());
-                                        BmobUtil.saveLog(logModel);
+
                                         flag = false;
                                         isRunning = false;
                                     }
@@ -172,12 +160,10 @@ public class TokenService extends Service {
                                 }
                             }
                         });
-                        }
-                       // MYHUtil.handleTaoToken();
 
+                                // MYHUtil.handleTaoToken();
+                                sleep = (random.nextInt(56) + 5) * 10000;
                         Thread.sleep(sleep);
-
-
 
 
                     } catch (Exception e) {

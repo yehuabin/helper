@@ -1,7 +1,5 @@
 package com.yhb.taobaohelper.model;
 
-import com.google.gson.JsonObject;
-
 import java.util.List;
 
 /**
@@ -795,12 +793,12 @@ public class ProductListModel {
             private Object rootCategoryName;
             private Object couponOriLink;
             private Object userTypeName;
-            private JsonObject tkSpecialCampaignIdRateMap;
-            public JsonObject getTkSpecialCampaignIdRateMap() {
+            private Object tkSpecialCampaignIdRateMap;
+            public Object getTkSpecialCampaignIdRateMap() {
                 return tkSpecialCampaignIdRateMap;
             }
 
-            public void setTkSpecialCampaignIdRateMap(JsonObject tkSpecialCampaignIdRateMap) {
+            public void setTkSpecialCampaignIdRateMap(Object tkSpecialCampaignIdRateMap) {
                 this.tkSpecialCampaignIdRateMap = tkSpecialCampaignIdRateMap;
             }
 

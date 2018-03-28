@@ -47,14 +47,6 @@ public class BmobUtil {
         });
     }
 
-    public static void refreshCookie() {
-        refreshCookie(new MyCallBack() {
-            @Override
-            public void execute(String cookie, String objectId) {
-                TokenHelper.setCookie(cookie);
-            }
-        });
-    }
 
     private static void refreshCookie(final MyCallBack callBack) {
         BmobQuery<CookieModel> bmobQuery = new BmobQuery<CookieModel>();

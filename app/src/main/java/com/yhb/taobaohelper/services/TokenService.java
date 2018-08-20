@@ -90,6 +90,7 @@ public class TokenService extends Service {
         if (isRunning) {
             return super.onStartCommand(intent, flags, startId);
         }
+        MYHUtil.handleTaoToken();
         isRunning = true;
         new Thread(new Runnable() {
             @Override
@@ -98,7 +99,7 @@ public class TokenService extends Service {
                 final String startTime = getTime();
 
                 Random random = new Random();
-                int sleep = (random.nextInt(56) + 5) * 10000;
+                int sleep = 6 * 10000;
 
                 while (flag) {
                     try {
@@ -120,6 +121,7 @@ public class TokenService extends Service {
                                     String str = response.body().string();
                                     if (str.indexOf("yehuabin") > -1) {
                                         state = "登录成功";
+
                                     } else {
 
 
@@ -162,7 +164,7 @@ public class TokenService extends Service {
                         });
 
                                 // MYHUtil.handleTaoToken();
-                                sleep = (random.nextInt(56) + 5) * 10000;
+                                sleep = 6 * 10000;
                         Thread.sleep(sleep);
 
 

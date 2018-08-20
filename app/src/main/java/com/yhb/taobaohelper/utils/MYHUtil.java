@@ -115,7 +115,6 @@ public class MYHUtil {
                                     RequestBody requestBodyPost = new FormBody.Builder()
                                             .add("id", item.get_id())
                                             .add("ok", "1")
-
                                             .add("replyContent", "抱歉小主，该宝贝没有参加返现活动")
                                             .build();
                                     Request request = new Request.Builder().url("http://" + host + "/adminApi/updateTaoToken").post(requestBodyPost).build();
@@ -136,7 +135,7 @@ public class MYHUtil {
                                                 RequestBody requestBodyPost = new FormBody.Builder()
                                                         .add("id", item.get_id())
                                                         .add("ok", "0")
-
+                                                        .add("title", product.getTitle())
                                                         .add("replyContent", "请求生成淘口令时，发现要重新登录淘宝")
                                                         .build();
                                                 Request request = new Request.Builder().url("http://" + host + "/adminApi/updateTaoToken").post(requestBodyPost).build();
